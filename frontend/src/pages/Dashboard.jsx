@@ -37,7 +37,9 @@ export const Dashboard = () => {
     return (
       <div className="">
         <TopBar></TopBar>
-        <div className="font-bold m-4">Your Balance $ {parseInt(balance)}</div>
+        <div className="font-bold m-4">
+          Your Balance Rs. {parseInt(balance)}
+        </div>
         <div className="m-4">
           <UserList setPaymentCard={setPaymentCard} setTxnDone={setTxnDone} />
         </div>

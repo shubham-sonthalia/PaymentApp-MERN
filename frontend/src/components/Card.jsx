@@ -96,6 +96,38 @@ export const Card = ({ signIn, message, setUser }) => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSignUpAndSignIn();
+    }
+  };
+  const handleSignUpAndSignIn = async () => {
+    let res = false;
+    if (signIn == true) {
+      res = await signInService(
+        email,
+        password,
+        setUser,
+        setEmail,
+        setPassword
+      );
+    } else {
+      res = await signUpService(
+        firstName,
+        lastName,
+        email,
+        password,
+        setUser,
+        setFirstName,
+        setLastName,
+        setEmail,
+        setPassword
+      );
+    }
+    if (res == true) {
+      navigate("/dashboard");
+    }
+  };
   return (
     <div className="rounded-lg shadow-md grid grid-cols-1 bg-white p-3">
       <div className="grid grid-rows-2">
@@ -185,39 +217,14 @@ export const Card = ({ signIn, message, setUser }) => {
           onChange={(e) => {
             setPassword(e.target.value);
           }}
+          onKeyDown={handleKeyDown}
           required
         />
       </div>
       <button
         type="button"
         className="text-btn_white bg-black hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-        onClick={async () => {
-          let res = false;
-          if (signIn == true) {
-            res = await signInService(
-              email,
-              password,
-              setUser,
-              setEmail,
-              setPassword
-            );
-          } else {
-            res = await signUpService(
-              firstName,
-              lastName,
-              email,
-              password,
-              setUser,
-              setFirstName,
-              setLastName,
-              setEmail,
-              setPassword
-            );
-          }
-          if (res == true) {
-            navigate("/dashboard");
-          }
-        }}
+        onClick={async () => handleSignUpAndSignIn}
       >
         {signIn == true ? "Sign In" : "Sign Up"}
       </button>
