@@ -1,6 +1,31 @@
 import { useState } from "react";
+import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
 
-export const PaymentCard = ({ user }) => {
+async function transferFunds(user, amount, userDetails, setTxnDone) {
+  const transferPaylaod = {
+    to: user["_id"],
+    amount: amount,
+  };
+  const response = await axios.post(
+    "http://localhost:3000/api/v1/account/transfer",
+    transferPaylaod,
+    {
+      headers: {
+        Authorization: "Bearer " + userDetails.token,
+      },
+    }
+  );
+  if (
+    response != null &&
+    response.data != null &&
+    response.data.message == "Transfer successful"
+  ) {
+    setTxnDone(true);
+  }
+}
+
+export const PaymentCard = ({ user, userDetails, setTxnDone }) => {
   const [amount, setAmount] = useState(0);
   return (
     <div className="bg-background_gray h-screen flex items-center justify-center">
@@ -40,6 +65,9 @@ export const PaymentCard = ({ user }) => {
           <button
             type="button"
             className="text-btn_white bg-payment_green hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+            onClick={() => {
+              transferFunds(user, amount, userDetails, setTxnDone);
+            }}
           >
             {"Initiate Transfer"}
           </button>

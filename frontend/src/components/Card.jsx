@@ -25,13 +25,21 @@ async function signUpService(
       signUpObj
     );
     if (response) {
-      console.log(response);
       setUser({
         firstName: firstName,
         lastName: lastName,
         email: email,
         token: response.data.token,
       });
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          token: response.data.token,
+        })
+      );
       setEmail("");
       setFirstName("");
       setLastName("");
@@ -62,6 +70,15 @@ async function signInService(email, password, setUser, setEmail, setPassword) {
         email: email,
         token: response.data.token,
       });
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          firstName: response.data.firstName,
+          lastName: response.data.lastName,
+          email: email,
+          token: response.data.token,
+        })
+      );
       setEmail("");
       setPassword("");
       return true;

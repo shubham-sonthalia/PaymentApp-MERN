@@ -1,4 +1,5 @@
-export const TopBar = ({ user }) => {
+export const TopBar = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
   return (
     <div className="flex flex-wrap items-center justify-between mx-auto p-4 shadow-md">
       <div className="font-bold text-xl">Payments App</div>

@@ -14,7 +14,7 @@ function useDebouncedText(text) {
   }, [text]);
   return debouncedText;
 }
-function useGetUserList(debouncedText, setLoading) {
+function useGetUserList(debouncedText, setLoading, user) {
   const [userList, setUserList] = useState([]);
   useEffect(() => {
     axios
@@ -25,6 +25,9 @@ function useGetUserList(debouncedText, setLoading) {
           response.data != null &&
           response.data.users != null
         ) {
+          response.data.users = response.data.users.filter((x) => {
+            return x["userName"] != user.email;
+          });
           setUserList(response.data.users);
           setLoading(false);
         }
@@ -32,11 +35,12 @@ function useGetUserList(debouncedText, setLoading) {
   }, [debouncedText]);
   return userList;
 }
-const UserList = ({ setPaymentCard }) => {
+const UserList = ({ setPaymentCard, setTxnDone }) => {
   const [loading, setLoading] = useState(true);
   const [filterText, setFilterText] = useState("");
   const debouncedText = useDebouncedText(filterText);
-  const users = useGetUserList(debouncedText, setLoading);
+  const userDetails = JSON.parse(localStorage.getItem("user"));
+  const users = useGetUserList(debouncedText, setLoading, userDetails);
   if (loading) {
     return (
       <div>
@@ -83,14 +87,20 @@ const UserList = ({ setPaymentCard }) => {
       </div>
       <div className="my-8">
         {users?.map((user) => (
-          <Users user={user} setPaymentCard={setPaymentCard}></Users>
+          <Users
+            key={user._id}
+            user={user}
+            setPaymentCard={setPaymentCard}
+            userDetails={userDetails}
+            setTxnDone={setTxnDone}
+          ></Users>
         ))}
       </div>
     </div>
   );
 };
 
-function Users({ user, setPaymentCard }) {
+function Users({ user, setPaymentCard, userDetails, setTxnDone }) {
   return (
     <div className="flex justify-between">
       <div className="flex">
@@ -108,7 +118,13 @@ function Users({ user, setPaymentCard }) {
         <button
           className="text-btn_white bg-black hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
           onClick={() => {
-            setPaymentCard(<PaymentCard user={user}></PaymentCard>);
+            setPaymentCard(
+              <PaymentCard
+                user={user}
+                userDetails={userDetails}
+                setTxnDone={setTxnDone}
+              ></PaymentCard>
+            );
           }}
         >
           Send Money
