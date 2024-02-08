@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useState } from "react";
-import { Dashboard } from "./pages/dashboard";
-import { Signin } from "./pages/signin";
-import { Signup } from "./pages/signup";
+import { Dashboard } from "./pages/Dashboard";
+import { Signin } from "./pages/Signin";
+import { Signup } from "./pages/Signup";
 function App() {
   const [user, setUser] = useState({
     email: "",
