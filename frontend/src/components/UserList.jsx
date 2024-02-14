@@ -18,7 +18,10 @@ function useGetUserList(debouncedText, setLoading, user) {
   const [userList, setUserList] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/v1/user/bulk?filter=" + debouncedText)
+      .get(
+        "https://0767pxkrva.execute-api.ap-south-1.amazonaws.com/latest/api/v1/user/bulk?filter=" +
+          debouncedText
+      )
       .then((response) => {
         if (
           response != null &&

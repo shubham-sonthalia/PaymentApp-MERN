@@ -9,11 +9,14 @@ function useGetBalance(user) {
   const [balance, setBalance] = useState(0);
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/v1/account/balance", {
-        headers: {
-          Authorization: "Bearer " + user.token,
-        },
-      })
+      .get(
+        "https://0767pxkrva.execute-api.ap-south-1.amazonaws.com/latest/api/v1/account/balance",
+        {
+          headers: {
+            Authorization: "Bearer " + user.token,
+          },
+        }
+      )
       .then((response) => {
         setBalance(response.data.balance);
       });

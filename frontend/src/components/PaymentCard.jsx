@@ -8,7 +8,7 @@ async function transferFunds(user, amount, userDetails, setTxnDone) {
     amount: amount,
   };
   const response = await axios.post(
-    "http://localhost:3000/api/v1/account/transfer",
+    "https://0767pxkrva.execute-api.ap-south-1.amazonaws.com/latest/api/v1/account/transfer",
     transferPaylaod,
     {
       headers: {
