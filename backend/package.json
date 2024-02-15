@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js",
+    "test": "node index.local.js",
     "create-api": "claudia create --handler lambda.handler --deploy-proxy-api --region ap-south-1",
     "update-api": "claudia update"
   },
