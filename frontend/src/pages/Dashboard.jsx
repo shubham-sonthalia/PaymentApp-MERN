@@ -6,7 +6,21 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function useGetBalance(user) {
+  return balance;
+}
+
+export const Dashboard = () => {
+  const [paymentCard, setPaymentCard] = useState(null);
+  const [txnDone, setTxnDone] = useState(false);
   const [balance, setBalance] = useState(0);
+
+  useEffect(() => {
+    if (txnDone == true) {
+      setPaymentCard(null);
+      toast.success("Transfer successful");
+      setTxnDone(false);
+    }
+  }, [txnDone]);
   useEffect(() => {
     axios
       .get(
@@ -20,22 +34,8 @@ function useGetBalance(user) {
       .then((response) => {
         setBalance(response.data.balance);
       });
-  }, []);
-  return balance;
-}
-
-export const Dashboard = () => {
-  const [paymentCard, setPaymentCard] = useState(null);
-  const [txnDone, setTxnDone] = useState(false);
-  useEffect(() => {
-    if (txnDone == true) {
-      setPaymentCard(null);
-      toast.success("Transfer successful");
-      setTxnDone(false);
-    }
   }, [txnDone]);
   const user = JSON.parse(localStorage.getItem("user"));
-  const balance = useGetBalance(user);
   if (paymentCard == null) {
     return (
       <div className="">
